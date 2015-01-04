@@ -8,10 +8,11 @@ from django.conf import settings
 from django.test.client import Client as DjangoClient
 from django.test.client import ClientHandler
 from django.test import testcases
+from django.utils import six
 from django.utils.http import urlencode
 from rest_framework.settings import api_settings
 from rest_framework.compat import RequestFactory as DjangoRequestFactory
-from rest_framework.compat import force_bytes_or_smart_bytes, six
+from rest_framework.compat import force_bytes_or_smart_bytes
 
 
 def force_authenticate(request, user=None, token=None):
@@ -35,7 +36,7 @@ class APIRequestFactory(DjangoRequestFactory):
         Encode the data returning a two tuple of (bytes, content_type)
         """
 
-        if not data:
+        if data is None:
             return ('', content_type)
 
         assert format is None or content_type is None, (
@@ -49,9 +50,10 @@ class APIRequestFactory(DjangoRequestFactory):
         else:
             format = format or self.default_format
 
-            assert format in self.renderer_classes, ("Invalid format '{0}'. "
-                "Available formats are {1}.  Set TEST_REQUEST_RENDERER_CLASSES "
-                "to enable extra request formats.".format(
+            assert format in self.renderer_classes, (
+                "Invalid format '{0}'. Available formats are {1}. "
+                "Set TEST_REQUEST_RENDERER_CLASSES to enable "
+                "extra request formats.".format(
                     format,
                     ', '.join(["'" + fmt + "'" for fmt in self.renderer_classes.keys()])
                 )
@@ -153,6 +155,56 @@ class APIClient(APIRequestFactory, DjangoClient):
         # Ensure that any credentials set get added to every request.
         kwargs.update(self._credentials)
         return super(APIClient, self).request(**kwargs)
+
+    def get(self, path, data=None, follow=False, **extra):
+        response = super(APIClient, self).get(path, data=data, **extra)
+        if follow:
+            response = self._handle_redirects(response, **extra)
+        return response
+
+    def post(self, path, data=None, format=None, content_type=None,
+             follow=False, **extra):
+        response = super(APIClient, self).post(
+            path, data=data, format=format, content_type=content_type, **extra)
+        if follow:
+            response = self._handle_redirects(response, **extra)
+        return response
+
+    def put(self, path, data=None, format=None, content_type=None,
+            follow=False, **extra):
+        response = super(APIClient, self).put(
+            path, data=data, format=format, content_type=content_type, **extra)
+        if follow:
+            response = self._handle_redirects(response, **extra)
+        return response
+
+    def patch(self, path, data=None, format=None, content_type=None,
+              follow=False, **extra):
+        response = super(APIClient, self).patch(
+            path, data=data, format=format, content_type=content_type, **extra)
+        if follow:
+            response = self._handle_redirects(response, **extra)
+        return response
+
+    def delete(self, path, data=None, format=None, content_type=None,
+               follow=False, **extra):
+        response = super(APIClient, self).delete(
+            path, data=data, format=format, content_type=content_type, **extra)
+        if follow:
+            response = self._handle_redirects(response, **extra)
+        return response
+
+    def options(self, path, data=None, format=None, content_type=None,
+                follow=False, **extra):
+        response = super(APIClient, self).options(
+            path, data=data, format=format, content_type=content_type, **extra)
+        if follow:
+            response = self._handle_redirects(response, **extra)
+        return response
+
+    def logout(self):
+        self._credentials = {}
+        return super(APIClient, self).logout()
 
 
 class APITransactionTestCase(testcases.TransactionTestCase):

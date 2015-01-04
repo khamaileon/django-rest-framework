@@ -81,8 +81,8 @@ Our gold sponsors include companies large and small. Many thanks for their signi
 <li><a href="http://lightningkite.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-lightning_kite.png);">Lightning Kite</a></li>
 <li><a href="https://opbeat.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-opbeat.png);">Opbeat</a></li>
 <li><a href="https://koordinates.com" rel="nofollow" style="background-image:url(../img/sponsors/2-koordinates.png);">Koordinates</a></li>
-<!--Xitij-->
-<!--Howard-->
+<li><a href="http://pulsecode.ca" rel="nofollow" style="background-image:url(../img/sponsors/2-pulsecode.png);">Pulsecode Inc.</a></li>
+<li><a href="http://singinghorsestudio.com" rel="nofollow" style="background-image:url(../img/sponsors/2-singing-horse.png);">Singing Horse Studio Ltd.</a></li>
 <li><a href="https://www.heroku.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-heroku.png);">Heroku</a></li>
 <li><a href="https://www.galileo-press.de/" rel="nofollow" style="background-image:url(../img/sponsors/2-galileo_press.png);">Galileo Press</a></li>
 <li><a href="http://www.securitycompass.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-security_compass.png);">Security Compass</a></li>
@@ -90,12 +90,13 @@ Our gold sponsors include companies large and small. Many thanks for their signi
 <li><a href="http://www.hipflaskapp.com" rel="nofollow" style="background-image:url(../img/sponsors/2-hipflask.png);">Hipflask</a></li>
 <li><a href="http://www.crate.io/" rel="nofollow" style="background-image:url(../img/sponsors/2-crate.png);">Crate</a></li>
 <li><a href="http://crypticocorp.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-cryptico.png);">Cryptico Corp</a></li>
+<li><a href="http://www.nexthub.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-nexthub.png);">NextHub</a></li>
+<li><a href="https://www.compile.com/" rel="nofollow" style="background-image:url(../img/sponsors/2-compile.png);">Compile</a></li>
+<li><a href="http://wusawork.org" rel="nofollow" style="background-image:url(../img/sponsors/2-wusawork.png);">WusaWork</a></li>
 <li><a href="http://envisionlinux.org/blog" rel="nofollow">Envision Linux</a></li>
 </ul>
 
-<!--Name: Envision Linux text-->
-
-<div style="clear: both;"></div>
+<div style="clear: both; padding-bottom: 40px;"></div>
 
 ---
 
@@ -110,10 +111,10 @@ The serious financial contribution that our silver sponsors have made is very mu
 <li><a href="http://providenz.fr/" rel="nofollow" style="background-image:url(../img/sponsors/3-providenz.png);">Providenz</a></li>
 <li><a href="https://www.alwaysdata.com" rel="nofollow" style="background-image:url(../img/sponsors/3-alwaysdata.png);">alwaysdata.com</a></li>
 <li><a href="http://www.triggeredmessaging.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-triggered_messaging.png);">Triggered Messaging</a></li>
-<!--Markus-->
+<li><a href="https://www.ipushpull.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-ipushpull.png);">PushPull Technology Ltd</a></li>
+<li><a href="http://www.transcode.de/" rel="nofollow" style="background-image:url(../img/sponsors/3-transcode.png);">Transcode</a></li>
 <li><a href="https://garfo.io/" rel="nofollow" style="background-image:url(../img/sponsors/3-garfo.png);">Garfo</a></li>
 <li><a href="https://goshippo.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-shippo.png);">Shippo</a></li>
-<!--Dylan-->
 <li><a href="http://www.gizmag.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-gizmag.png);">Gizmag</a></li>
 <li><a href="http://www.tivix.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-tivix.png);">Tivix</a></li>
 <li><a href="http://www.safaribooksonline.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-safari.png);">Safari</a></li>
@@ -121,23 +122,42 @@ The serious financial contribution that our silver sponsors have made is very mu
 <li><a href="http://www.aba-systems.com.au/" rel="nofollow" style="background-image:url(../img/sponsors/3-aba.png);">ABA Systems</a></li>
 <li><a href="http://beefarm.ru/" rel="nofollow" style="background-image:url(../img/sponsors/3-beefarm.png);">beefarm.ru</a></li>
 <li><a href="http://www.vzzual.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-vzzual.png);">Vzzual.com</a></li>
-<!--Vzzual-->
-<!--Linovia-->
 <li><a href="http://infinite-code.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-infinite_code.png);">Infinite Code</a></li>
-<!--Jon-->
+<li><a href="http://crosswordtracker.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-crosswordtracker.png);">Crossword Tracker</a></li>
 <li><a href="https://www.pkgfarm.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-pkgfarm.png);">PkgFarm</a></li>
 <li><a href="http://life.tl/" rel="nofollow" style="background-image:url(../img/sponsors/3-life_the_game.png);">Life. The Game.</a></li>
 <li><a href="http://blimp.io/" rel="nofollow" style="background-image:url(../img/sponsors/3-blimp.png);">Blimp</a></li>
 <li><a href="http://pathwright.com" rel="nofollow" style="background-image:url(../img/sponsors/3-pathwright.png);">Pathwright</a></li>
 <li><a href="http://fluxility.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-fluxility.png);">Fluxility</a></li>
+<li><a href="http://teonite.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-teonite.png);">Teonite</a></li>
 <li><a href="http://trackmaven.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-trackmaven.png);">TrackMaven</a></li>
+<li><a href="http://www.phurba.net/" rel="nofollow" style="background-image:url(../img/sponsors/3-phurba.png);">Phurba</a></li>
 <li><a href="http://www.nephila.co.uk/" rel="nofollow" style="background-image:url(../img/sponsors/3-nephila.png);">Nephila</a></li>
-<!--Haris-->
 <li><a href="http://www.aditium.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-aditium.png);">Aditium</a></li>
-<!--Craig-->
+<li><a href="http://www.eyesopen.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-openeye.png);">OpenEye Scientific Software</a></li>
+<li><a href="https://holvi.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-holvi.png);">Holvi</a></li>
+<li><a href="http://cantemo.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-cantemo.gif);">Cantemo</a></li>
+<li><a href="https://www.makespace.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-makespace.png);">MakeSpace</a></li>
+<li><a href="https://www.ax-semantics.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-ax_semantics.png);">AX Semantics</a></li>
+<li><a href="http://istrategylabs.com/" rel="nofollow" style="background-image:url(../img/sponsors/3-isl.png);">ISL</a></li>
 </ul>
 
-<div style="clear: both; padding-bottom: 20px;"></div>
+<div style="clear: both; padding-bottom: 40px;"></div>
 
-**Individual contributions**: Paul Hallet, <a href="http://www.paulwhippconsulting.com/">Paul Whipp</a>, Jannis Leidel, <a href="http://spielmannsolutions.com/">Johannes Spielmann</a>,  <a href="http://chrisheisel.com/">Chris Heisel</a>, Marwan Alsabbagh.
+**Individual backers**: Paul Hallett, <a href="http://www.paulwhippconsulting.com/">Paul Whipp</a>, Dylan Roy, Jannis Leidel, <a href="https://linovia.com/en/">Xavier Ordoquy</a>, <a href="http://spielmannsolutions.com/">Johannes Spielmann</a>, <a href="http://brooklynhacker.com/">Rob Spectre</a>, <a href="http://chrisheisel.com/">Chris Heisel</a>, Marwan Alsabbagh, Haris Ali, Tuomas Toivonen.
 
+---
+
+### Advocates
+
+The following individuals made a significant financial contribution to the development of Django REST framework 3, for which I can only offer a huge, warm and sincere thank you!
+
+**Individual backers**: Jure Cuhalev, Kevin Brolly, Ferenc Szalai, Dougal Matthews, Stefan Foulis, Carlos Hernando, Alen Mujezinovic, Ross Crawford-d'Heureuse, George Kappel, Alasdair Nicol, John Carr, Steve Winton, Trey, Manuel Miranda, David Horn, Vince Mi, Daniel Sears, Jamie Matthews, Ryan Currah, Marty Kemka, Scott Nixon, Moshin Elahi, Kevin Campbell, Jose Antonio Leiva Izquierdo, Kevin Stone, Andrew Godwin, Tijs Teulings, Roger Boardman, Xavier Antoviaque, Darian Moody, Lujeni, Jon Dugan, Wiley Kestner, Daniel C. Silverstein, Daniel Hahler, Subodh Nijsure, Philipp Weidenhiller, Yusuke Muraoka, Danny Roa, Reto Aebersold, Kyle Getrost, Décébal Hormuz, James Dacosta, Matt Long, Mauro Rocco, Tyrel Souza, Ryan Campbell, Ville Jyrkkä, Charalampos Papaloizou, Nikolai Røed Kristiansen, Antoni Aloy López, Celia Oakley, Michał Krawczak, Ivan VenOsdel, Tim Watts, Martin Warne, Nicola Jordan, Ryan Kaskel.
+
+**Corporate backers**: Savannah Informatics, Prism Skylabs, Musical Operating Devices.
+
+---
+
+### Supporters
+
+There were also almost 300 further individuals choosing to help fund the project at other levels or choosing to give anonymously. Again, thank you, thank you, thank you!

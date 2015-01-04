@@ -9,14 +9,6 @@
 
 ---
 
-#### Django REST framework 3 - Kickstarter announcement!
-
-We are currently running a Kickstarter campaign to help fund the development of Django REST framework 3.
-
-If you want to help drive sustainable open-source development **please [check out the Kickstarter project](https://www.kickstarter.com/projects/tomchristie/django-rest-framework-3) and consider funding us.**
-
----
-
 <p>
 <h1 style="position: absolute;
     width: 1px;
@@ -57,8 +49,8 @@ Some reasons you might want to use REST framework:
 
 REST framework requires the following:
 
-* Python (2.6.5+, 2.7, 3.2, 3.3)
-* Django (1.3, 1.4, 1.5, 1.6)
+* Python (2.6.5+, 2.7, 3.2, 3.3, 3.4)
+* Django (1.4.2+, 1.5, 1.6, 1.7)
 
 The following packages are optional:
 
@@ -93,10 +85,10 @@ Add `'rest_framework'` to your `INSTALLED_APPS` setting.
 
 If you're intending to use the browsable API you'll probably also want to add REST framework's login and logout views.  Add the following to your root `urls.py` file.
 
-    urlpatterns = patterns('',
+    urlpatterns = [
         ...
         url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-    )
+    ]
 
 Note that the URL path can be whatever you want, but you must include `'rest_framework.urls'` with the `'rest_framework'` namespace.
 
@@ -104,16 +96,11 @@ Note that the URL path can be whatever you want, but you must include `'rest_fra
 
 Let's take a look at a quick example of using REST framework to build a simple model-backed API.
 
-We'll create a read-write API for accessing users and groups.
+We'll create a read-write API for accessing information on the users of our project.
 
 Any global settings for a REST framework API are kept in a single configuration dictionary named `REST_FRAMEWORK`.  Start off by adding the following to your `settings.py` module:
 
     REST_FRAMEWORK = {
-        # Use hyperlinked styles by default.
-        # Only used if the `serializer_class` attribute is not set on a view.
-        'DEFAULT_MODEL_SERIALIZER_CLASS':
-            'rest_framework.serializers.HyperlinkedModelSerializer',
-
         # Use Django's standard `django.contrib.auth` permissions,
         # or allow read-only access for unauthenticated users.
         'DEFAULT_PERMISSION_CLASSES': [
@@ -126,34 +113,37 @@ Don't forget to make sure you've also added `rest_framework` to your `INSTALLED_
 We're ready to create our API now.
 Here's our project's root `urls.py` module:
 
-    from django.conf.urls import url, patterns, include
-    from django.contrib.auth.models import User, Group
-    from rest_framework import viewsets, routers
+    from django.conf.urls import url, include
+    from django.contrib.auth.models import User
+    from rest_framework import routers, serializers, viewsets
+
+	# Serializers define the API representation.
+	class UserSerializer(serializers.HyperlinkedModelSerializer):
+	    class Meta:
+	        model = User
+	        fields = ('url', 'username', 'email', 'is_staff')
 
     # ViewSets define the view behavior.
     class UserViewSet(viewsets.ModelViewSet):
-        model = User
-
-    class GroupViewSet(viewsets.ModelViewSet):
-        model = Group
-
+        queryset = User.objects.all()
+        serializer_class = UserSerializer
 
     # Routers provide an easy way of automatically determining the URL conf.
     router = routers.DefaultRouter()
     router.register(r'users', UserViewSet)
-    router.register(r'groups', GroupViewSet)
-
 
     # Wire up our API using automatic URL routing.
     # Additionally, we include login URLs for the browseable API.
-    urlpatterns = patterns('',
+    urlpatterns = [
         url(r'^', include(router.urls)),
         url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-    )
+    ]
+
+You can now open the API in your browser at [http://127.0.0.1:8000/](http://127.0.0.1:8000/), and view your new 'users' API. If you use the login control in the top right corner you'll also be able to add, create and delete users from the system.
 
 ## Quickstart
 
-Can't wait to get started?  The [quickstart guide][quickstart] is the fastest way to get up and running, and building APIs with REST framework.
+Can't wait to get started? The [quickstart guide][quickstart] is the fastest way to get up and running, and building APIs with REST framework.
 
 ## Tutorial
 
@@ -205,29 +195,21 @@ General guides to using REST framework.
 * [Browser enhancements][browser-enhancements]
 * [The Browsable API][browsableapi]
 * [REST, Hypermedia & HATEOAS][rest-hypermedia-hateoas]
+* [Third Party Resources][third-party-resources]
 * [Contributing to REST framework][contributing]
 * [2.0 Announcement][rest-framework-2-announcement]
 * [2.2 Announcement][2.2-announcement]
 * [2.3 Announcement][2.3-announcement]
+* [2.4 Announcement][2.4-announcement]
 * [Kickstarter Announcement][kickstarter-announcement]
 * [Release Notes][release-notes]
 * [Credits][credits]
 
 ## Development
 
-If you want to work on REST framework itself, clone the repository, then...
-
-Build the docs:
-
-    ./mkdocs.py
-
-Run the tests:
-
-    ./rest_framework/runtests/runtests.py
-
-To run the tests against all supported configurations, first install [the tox testing tool][tox] globally, using `pip install tox`, then simply run `tox`:
-
-    tox
+See the [Contribution guidelines][contributing] for information on how to clone
+the repository, run the test suite and contribute changes back to REST
+Framework.
 
 ## Support
 
@@ -331,10 +313,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 [browsableapi]: topics/browsable-api.md
 [rest-hypermedia-hateoas]: topics/rest-hypermedia-hateoas.md
 [contributing]: topics/contributing.md
+[third-party-resources]: topics/third-party-resources.md
 [rest-framework-2-announcement]: topics/rest-framework-2-announcement.md
 [2.2-announcement]: topics/2.2-announcement.md
 [2.3-announcement]: topics/2.3-announcement.md
-[kickstarter-announcement]: topics/kickstarter-announcement.md 
+[2.4-announcement]: topics/2.4-announcement.md
+[kickstarter-announcement]: topics/kickstarter-announcement.md
 [release-notes]: topics/release-notes.md
 [credits]: topics/credits.md
 

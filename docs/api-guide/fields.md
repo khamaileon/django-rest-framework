@@ -62,7 +62,7 @@ A dictionary of error codes to error messages.
 ### `widget`
 
 Used only if rendering the field to HTML.
-This argument sets the widget that should be used to render the field.
+This argument sets the widget that should be used to render the field. For more details, and a list of available widgets, see [the Django documentation on form widgets][django-widgets]. 
 
 ### `label`
 
@@ -164,11 +164,12 @@ Corresponds to `django.db.models.fields.BooleanField`.
 ## CharField
 
 A text representation, optionally validates the text to be shorter than `max_length` and longer than `min_length`.
+If `allow_none` is `False` (default), `None` values will be converted to an empty string.
 
 Corresponds to `django.db.models.fields.CharField`
 or `django.db.models.fields.TextField`.
 
-**Signature:** `CharField(max_length=None, min_length=None)`
+**Signature:** `CharField(max_length=None, min_length=None, allow_none=False)`
 
 ## URLField
 
@@ -365,12 +366,18 @@ The [drf-extra-fields][drf-extra-fields] package provides extra serializer field
 
 The [django-rest-framework-gis][django-rest-framework-gis] package provides geographic addons for django rest framework like a  `GeometryField` field and a GeoJSON serializer.
 
+## django-rest-framework-hstore
+
+The [django-rest-framework-hstore][django-rest-framework-hstore] package provides an `HStoreField` to support [django-hstore][django-hstore] `DictionaryField` model field.
 
 [cite]: https://docs.djangoproject.com/en/dev/ref/forms/api/#django.forms.Form.cleaned_data
 [FILE_UPLOAD_HANDLERS]: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FILE_UPLOAD_HANDLERS
 [ecma262]: http://ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
 [strftime]: http://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+[django-widgets]: https://docs.djangoproject.com/en/dev/ref/forms/widgets/
 [iso8601]: http://www.w3.org/TR/NOTE-datetime
 [drf-compound-fields]: http://drf-compound-fields.readthedocs.org
 [drf-extra-fields]: https://github.com/Hipo/drf-extra-fields
 [django-rest-framework-gis]: https://github.com/djangonauts/django-rest-framework-gis
+[django-rest-framework-hstore]: https://github.com/djangonauts/django-rest-framework-hstore
+[django-hstore]: https://github.com/djangonauts/django-hstore

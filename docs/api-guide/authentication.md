@@ -126,7 +126,13 @@ To use the `TokenAuthentication` scheme you'll need to [configure the authentica
         'rest_framework.authtoken'
     )
 
-Make sure to run `manage.py syncdb` after changing your settings. The `authtoken` database tables are managed by south (see [Schema migrations](#schema-migrations) below).
+
+---
+
+**Note:** Make sure to run `manage.py syncdb` after changing your settings. The `rest_framework.authtoken` app provides both Django (from v1.7) and South database migrations. See [Schema migrations](#schema-migrations) below.
+
+---
+
 
 You'll also need to create tokens for your users.
 
@@ -162,12 +168,13 @@ The `curl` command line tool may be useful for testing token authenticated APIs.
 
 If you want every user to have an automatically generated Token, you can simply catch the User's `post_save` signal.
 
+    from django.conf import settings
     from django.contrib.auth import get_user_model
     from django.db.models.signals import post_save
     from django.dispatch import receiver
     from rest_framework.authtoken.models import Token
 
-    @receiver(post_save, sender=get_user_model())
+    @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     def create_auth_token(sender, instance=None, created=False, **kwargs):
         if created:
             Token.objects.create(user=instance)
@@ -184,9 +191,10 @@ If you've already created some users, you can generate tokens for all existing u
 
 When using `TokenAuthentication`, you may want to provide a mechanism for clients to obtain a token given the username and password.  REST framework provides a built-in view to provide this behavior.  To use it, add the `obtain_auth_token` view to your URLconf:
 
-    urlpatterns += patterns('',
-        url(r'^api-token-auth/', 'rest_framework.authtoken.views.obtain_auth_token')
-    )
+    from rest_framework.authtoken import views
+    urlpatterns += [
+        url(r'^api-token-auth/', views.obtain_auth_token)
+    ]
 
 Note that the URL part of the pattern can be whatever you want to use.
 
@@ -198,7 +206,14 @@ Note that the default `obtain_auth_token` view explicitly uses JSON requests and
 
 #### Schema migrations
 
-The `rest_framework.authtoken` app includes a south migration that will create the authtoken table.
+The `rest_framework.authtoken` app includes both Django native migrations (for Django versions >1.7) and South migrations (for Django versions <1.7) that will create the authtoken table.
+
+----
+
+**Note**: From REST Framework v2.4.0 using South with Django <1.7 requires upgrading South v1.0+
+
+----
+
 
 If you're using a [custom user model][custom-user-model] you'll need to make sure that any initial migration that creates the user table runs before the authtoken table is created.
 
@@ -401,6 +416,10 @@ The [HawkREST][hawkrest] library builds on the [Mohawk][mohawk] library to let y
 
 HTTP Signature (currently a [IETF draft][http-signature-ietf-draft]) provides a way to achieve origin authentication and message integrity for HTTP messages. Similar to [Amazon's HTTP Signature scheme][amazon-http-signature], used by many of its services, it permits stateless, per-request authentication. [Elvio Toccalino][etoccalino] maintains the [djangorestframework-httpsignature][djangorestframework-httpsignature] package which provides an easy to use HTTP Signature Authentication mechanism.
 
+## Djoser
+
+[Djoser][djoser] library provides a set of views to handle basic actions such as registration, login, logout, password reset and account activation. The package works with a custom user model and it uses token based authentication. This is a ready to use REST implementation of Django authentication system.
+
 [cite]: http://jacobian.org/writing/rest-worst-practices/
 [http401]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2
 [http403]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4
@@ -435,3 +454,4 @@ HTTP Signature (currently a [IETF draft][http-signature-ietf-draft]) provides a 
 [hawk]: https://github.com/hueniverse/hawk
 [mohawk]: http://mohawk.readthedocs.org/en/latest/
 [mac]: http://tools.ietf.org/html/draft-hammer-oauth-v2-mac-token-05
+[djoser]: https://github.com/sunscrapers/djoser

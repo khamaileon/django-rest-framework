@@ -76,10 +76,12 @@ path_list = [
     'topics/browser-enhancements.md',
     'topics/browsable-api.md',
     'topics/rest-hypermedia-hateoas.md',
+    'topics/third-party-resources.md',
     'topics/contributing.md',
     'topics/rest-framework-2-announcement.md',
     'topics/2.2-announcement.md',
     'topics/2.3-announcement.md',
+    'topics/2.4-announcement.md',
     'topics/release-notes.md',
     'topics/credits.md',
 ]
@@ -142,7 +144,7 @@ for (dirpath, dirnames, filenames) in os.walk(docs_dir):
             toc += template + '\n'
 
         if filename == 'index.md':
-            main_title = 'Django REST framework - APIs made easy'
+            main_title = 'Django REST framework - Web APIs for Django'
         else:
             main_title = main_title + ' - Django REST framework'
 

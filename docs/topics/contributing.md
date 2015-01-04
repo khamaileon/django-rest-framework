@@ -62,10 +62,44 @@ To run the tests, clone the repository, and then:
     virtualenv env
     source env/bin/activate
     pip install -r requirements.txt
-    pip install -r optionals.txt
+    pip install -r requirements-test.txt
 
     # Run the tests
-    rest_framework/runtests/runtests.py
+    ./runtests.py
+
+### Test options
+
+Run using a more concise output style.
+
+    ./runtests -q
+
+Run the tests using a more concise output style, no coverage, no flake8.
+
+    ./runtests --fast
+
+Don't run the flake8 code linting.
+
+    ./runtests --nolint
+
+Only run the flake8 code linting, don't run the tests.
+
+    ./runtests --lintonly
+
+Run the tests for a given test case.
+
+    ./runtests MyTestCase
+
+Run the tests for a given test method.
+
+    ./runtests MyTestCase.test_this_method
+
+Shorter form to run the tests for a given test method.
+
+    ./runtests test_this_method
+
+Note: The test case and test method matching is fuzzy and will sometimes run other tests that contain a partial string match to the given  command line input.
+
+### Running against multiple environments
 
 You can also use the excellent [tox][tox] testing tool to run the tests against all supported versions of Python and Django.  Install `tox` globally, and then simply run:
 
@@ -176,7 +210,9 @@ We recommend the [`django-reusable-app`][django-reusable-app] template as a good
 
 ## Linking to your package
 
-Once your package is decently documented and available on PyPI open a pull request or issue, and we'll add a link to it from the main REST framework documentation.
+Once your package is decently documented and available on PyPI open a pull request or issue, and we'll add a link to it from the main REST framework documentation. You can add your package under **Third party packages** of the API Guide section that best applies, like [Authentication][authentication] or [Permissions][permissions]. You can also link your package under the [Third Party Resources][third-party-resources] section.
+
+We also suggest adding it to the [REST Framework][rest-framework-grid] grid on Django Packages.
 
 [cite]: http://www.w3.org/People/Berners-Lee/FAQ.html
 [code-of-conduct]: https://www.djangoproject.com/conduct/
@@ -191,3 +227,7 @@ Once your package is decently documented and available on PyPI open a pull reque
 [docs]: https://github.com/tomchristie/django-rest-framework/tree/master/docs
 [mou]: http://mouapp.com/
 [django-reusable-app]: https://github.com/dabapps/django-reusable-app
+[authentication]: ../api-guide/authentication.md
+[permissions]: ../api-guide/permissions.md
+[third-party-resources]: third-party-resources.md
+[rest-framework-grid]: https://www.djangopackages.com/grids/g/django-rest-framework/
