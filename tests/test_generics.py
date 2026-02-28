@@ -713,3 +713,127 @@ class TestTyping(TestCase):
 
     def test_instanceview_is_subscriptable(self):
         assert generics.RetrieveAPIView is generics.RetrieveAPIView["foo"]
+
+
+# Serializers for split request/response tests
+class InputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BasicModel
+        fields = ['text']
+
+
+class OutputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BasicModel
+        fields = ['id', 'text']
+
+
+class SplitRootView(generics.ListCreateAPIView):
+    queryset = BasicModel.objects.all()
+    serializer_class = BasicSerializer
+    request_serializer_class = InputSerializer
+    response_serializer_class = OutputSerializer
+
+
+class SplitInstanceView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BasicModel.objects.all()
+    serializer_class = BasicSerializer
+    request_serializer_class = InputSerializer
+    response_serializer_class = OutputSerializer
+
+
+class TestSplitSerializerClasses(TestCase):
+    """Tests for request_serializer_class / response_serializer_class on GenericAPIView."""
+
+    def test_get_request_serializer_class_returns_request_class(self):
+        view = SplitRootView()
+        assert view.get_request_serializer_class() is InputSerializer
+
+    def test_get_response_serializer_class_returns_response_class(self):
+        view = SplitRootView()
+        assert view.get_response_serializer_class() is OutputSerializer
+
+    def test_get_request_serializer_class_fallback(self):
+        """When request_serializer_class is None, falls back to serializer_class."""
+        view = RootView()
+        assert view.get_request_serializer_class() is BasicSerializer
+
+    def test_get_response_serializer_class_fallback(self):
+        """When response_serializer_class is None, falls back to serializer_class."""
+        view = RootView()
+        assert view.get_response_serializer_class() is BasicSerializer
+
+    def test_get_request_serializer_returns_instance(self):
+        request = factory.get('/')
+        view = SplitRootView()
+        view.request = request
+        view.format_kwarg = None
+        serializer = view.get_request_serializer()
+        assert isinstance(serializer, InputSerializer)
+
+    def test_get_response_serializer_returns_instance(self):
+        request = factory.get('/')
+        view = SplitRootView()
+        view.request = request
+        view.format_kwarg = None
+        serializer = view.get_response_serializer()
+        assert isinstance(serializer, OutputSerializer)
+
+
+class TestSplitSerializerMixins(TestCase):
+    """Tests that mixins correctly use split serializers at runtime."""
+
+    def setUp(self):
+        items = ['foo', 'bar', 'baz']
+        for item in items:
+            BasicModel(text=item).save()
+        self.objects = BasicModel.objects
+        self.split_root_view = SplitRootView.as_view()
+        self.split_instance_view = SplitInstanceView.as_view()
+
+    def test_create_uses_split_serializers(self):
+        """POST should validate with request serializer and respond with response serializer."""
+        data = {'text': 'new_item'}
+        request = factory.post('/', data, format='json')
+        response = self.split_root_view(request).render()
+        assert response.status_code == status.HTTP_201_CREATED
+        # Response should include 'id' (from OutputSerializer)
+        assert 'id' in response.data
+        assert response.data['text'] == 'new_item'
+
+    def test_list_uses_response_serializer(self):
+        """GET list should use response serializer."""
+        request = factory.get('/')
+        response = self.split_root_view(request).render()
+        assert response.status_code == status.HTTP_200_OK
+        # Each item should have 'id' (from OutputSerializer)
+        for item in response.data:
+            assert 'id' in item
+
+    def test_retrieve_uses_response_serializer(self):
+        """GET detail should use response serializer."""
+        obj = self.objects.first()
+        request = factory.get(f'/{obj.pk}')
+        response = self.split_instance_view(request, pk=obj.pk).render()
+        assert response.status_code == status.HTTP_200_OK
+        assert 'id' in response.data
+
+    def test_update_uses_split_serializers(self):
+        """PUT should validate with request serializer and respond with response serializer."""
+        obj = self.objects.first()
+        data = {'text': 'updated'}
+        request = factory.put(f'/{obj.pk}', data, format='json')
+        response = self.split_instance_view(request, pk=obj.pk).render()
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['text'] == 'updated'
+        assert 'id' in response.data
+
+    def test_partial_update_uses_split_serializers(self):
+        """PATCH should validate with request serializer and respond with response serializer."""
+        obj = self.objects.first()
+        data = {'text': 'patched'}
+        request = factory.patch(f'/{obj.pk}', data, format='json')
+        response = self.split_instance_view(request, pk=obj.pk).render()
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['text'] == 'patched'
+        assert 'id' in response.data

@@ -167,6 +167,28 @@ class ExampleSerializerModel(serializers.Serializer):
         model = OpenAPIExample
 
 
+class ExampleRequestSerializer(serializers.Serializer):
+    text = serializers.CharField()
+
+
+class ExampleResponseSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    text = serializers.CharField()
+
+
+class ExampleSplitSerializerView(generics.GenericAPIView):
+    """View that uses separate request/response serializer classes."""
+    serializer_class = ExampleSerializer
+    request_serializer_class = ExampleRequestSerializer
+    response_serializer_class = ExampleResponseSerializer
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+
 class ExampleOperationIdDuplicate1(generics.GenericAPIView):
     serializer_class = ExampleSerializerModel
 

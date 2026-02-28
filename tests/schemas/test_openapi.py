@@ -925,6 +925,130 @@ class TestOperationIntrospection(TestCase):
             'tags': ['']
         }
 
+    def test_view_level_split_serializer_schema(self):
+        """
+        When a view defines request_serializer_class and response_serializer_class,
+        the schema should automatically use different components for request and response.
+        """
+        path = '/'
+        method = 'POST'
+        view = create_view(
+            views.ExampleSplitSerializerView,
+            method,
+            create_request(path),
+        )
+        inspector = AutoSchema()
+        inspector.view = view
+
+        components = inspector.get_components(path, method)
+        assert 'ExampleRequest' in components
+        assert 'ExampleResponse' in components
+        assert components['ExampleRequest']['properties'] == {
+            'text': {'type': 'string'}
+        }
+        assert 'id' in components['ExampleResponse']['properties']
+        assert 'text' in components['ExampleResponse']['properties']
+
+        operation = inspector.get_operation(path, method)
+        request_ref = operation['requestBody']['content']['application/json']['schema']
+        assert request_ref == {'$ref': '#/components/schemas/ExampleRequest'}
+        response_ref = operation['responses']['201']['content']['application/json']['schema']
+        assert response_ref == {'$ref': '#/components/schemas/ExampleResponse'}
+
+    def test_view_level_split_serializer_get_defaults_to_response(self):
+        """
+        GET requests should use the response serializer for response and no request body.
+        """
+        path = '/'
+        method = 'GET'
+        view = create_view(
+            views.ExampleSplitSerializerView,
+            method,
+            create_request(path),
+        )
+        inspector = AutoSchema()
+        inspector.view = view
+
+        components = inspector.get_components(path, method)
+        # For GET, both request and response serializers appear in components
+        # but only response is used in the actual operation
+        assert 'ExampleResponse' in components
+
+        operation = inspector.get_operation(path, method)
+        assert 'requestBody' not in operation
+        response_schema = operation['responses']['200']['content']['application/json']['schema']
+        # List view wraps in array
+        assert response_schema == {
+            'type': 'array',
+            'items': {'$ref': '#/components/schemas/ExampleResponse'}
+        }
+
+    def test_component_name_collision_warning(self):
+        """
+        When request and response serializers produce the same component name
+        but different content, a warning should be raised.
+        """
+        class InputSerializer(serializers.Serializer):
+            name = serializers.CharField()
+
+        class OutputSerializer(serializers.Serializer):
+            id = serializers.IntegerField()
+
+        class CollisionSchema(AutoSchema):
+            def get_request_serializer(self, path, method):
+                return InputSerializer()
+
+            def get_response_serializer(self, path, method):
+                return OutputSerializer()
+
+            def get_component_name(self, serializer):
+                # Force same component name for both
+                return 'Item'
+
+        path = '/'
+        method = 'POST'
+        view = create_view(
+            views.ExampleGenericAPIView,
+            method,
+            create_request(path),
+        )
+        inspector = CollisionSchema()
+        inspector.view = view
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            components = inspector.get_components(path, method)
+
+            assert len(w) == 1
+            assert 'Schema component "Item"' in str(w[0].message)
+            assert 'different content' in str(w[0].message)
+
+        # First definition (request) wins with setdefault
+        assert 'name' in components['Item']['properties']
+
+    def test_fallback_to_default_serializer_when_no_split(self):
+        """
+        When no request/response serializer classes are set, schema should
+        fall back to the default serializer_class.
+        """
+        path = '/'
+        method = 'GET'
+        view = create_view(
+            views.ExampleGenericAPIView,
+            method,
+            create_request(path),
+        )
+        inspector = AutoSchema()
+        inspector.view = view
+
+        # Both should return the same serializer type as get_serializer
+        default = inspector.get_serializer(path, method)
+        request_ser = inspector.get_request_serializer(path, method)
+        response_ser = inspector.get_response_serializer(path, method)
+
+        assert type(default) is type(request_ser)
+        assert type(default) is type(response_ser)
+
     def test_repeat_operation_ids(self):
         router = routers.SimpleRouter()
         router.register('account', views.ExampleGenericViewSet, basename="account")

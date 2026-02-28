@@ -202,6 +202,13 @@ class AutoSchema(ViewInspector):
         if isinstance(response_serializer, serializers.Serializer):
             component_name = self.get_component_name(response_serializer)
             content = self.map_serializer(response_serializer)
+            if component_name in components and components[component_name] != content:
+                warnings.warn(
+                    f'Schema component "{component_name}" has been defined by both the request '
+                    f'and response serializer with different content. The response schema will be '
+                    f'ignored. Consider using distinct component names (e.g. via component_name '
+                    f'or get_component_name).'
+                )
             components.setdefault(component_name, content)
 
         return components
@@ -631,17 +638,45 @@ class AutoSchema(ViewInspector):
 
     def get_request_serializer(self, path, method):
         """
-        Override this method if your view uses a different serializer for
-        handling request body.
+        Return the serializer instance for the request body.
+        Delegates to view.get_request_serializer() when available,
+        otherwise falls back to self.get_serializer().
         """
-        return self.get_serializer(path, method)
+        view = self.view
+
+        if not hasattr(view, 'get_request_serializer'):
+            return self.get_serializer(path, method)
+
+        try:
+            return view.get_request_serializer()
+        except exceptions.APIException:
+            warnings.warn(
+                '{}.get_request_serializer() raised an exception during '
+                'schema generation. Serializer fields will not be '
+                'generated for {} {}.'.format(view.__class__.__name__, method, path)
+            )
+            return None
 
     def get_response_serializer(self, path, method):
         """
-        Override this method if your view uses a different serializer for
-        populating response data.
+        Return the serializer instance for the response body.
+        Delegates to view.get_response_serializer() when available,
+        otherwise falls back to self.get_serializer().
         """
-        return self.get_serializer(path, method)
+        view = self.view
+
+        if not hasattr(view, 'get_response_serializer'):
+            return self.get_serializer(path, method)
+
+        try:
+            return view.get_response_serializer()
+        except exceptions.APIException:
+            warnings.warn(
+                '{}.get_response_serializer() raised an exception during '
+                'schema generation. Serializer fields will not be '
+                'generated for {} {}.'.format(view.__class__.__name__, method, path)
+            )
+            return None
 
     def get_reference(self, serializer):
         return {'$ref': f'#/components/schemas/{self.get_component_name(serializer)}'}
